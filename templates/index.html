@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Iris Flower Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5, #b9deed, #efefbb);
+            background-size: 400% 400%;
+            animation: gradientMove 10s ease infinite;
+            position: relative;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animated soft floral watermark background */
+        .flower-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://i.imgur.com/o7yZV1j.png'); /* transparent floral watermark */
+            background-repeat: repeat;
+            background-size: 250px 250px;
+            opacity: 0.08;
+            z-index: 0;
+            animation: floralDrift 40s linear infinite;
+        }
+
+        @keyframes floralDrift {
+            from { background-position: 0 0; }
+            to { background-position: 800px 600px; }
+        }
+
+        /* Floating circles for extra depth */
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.25;
+            animation: float 12s infinite ease-in-out;
+            z-index: 1;
+        }
+        .circle1 {
+            width: 150px; height: 150px;
+            background: #ffffff80;
+            top: 10%; left: 10%;
+            animation-delay: 0s;
+        }
+        .circle2 {
+            width: 250px; height: 250px;
+            background: #ffffff60;
+            bottom: 15%; right: 10%;
+            animation-delay: 3s;
+        }
+        .circle3 {
+            width: 120px; height: 120px;
+            background: #ffffff50;
+            bottom: 25%; left: 25%;
+            animation-delay: 6s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .container {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.8);
+            padding: 45px 35px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            color: #2d2d2d;
+            font-size: 28px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .input-group {
+            position: relative;
+            width: 80%;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6a11cb;
+        }
+
+        input {
+            padding: 10px 10px 10px 38px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: 100%;
+            transition: all 0.3s;
+            font-size: 15px;
+            background: #ffffffd9;
+        }
+
+        input:focus {
+            border-color: #6a11cb;
+            box-shadow: 0 0 10px rgba(106,17,203,0.3);
+            outline: none;
+        }
+
+        button {
+            padding: 12px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            width: 80%;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .result {
+            margin-top: 25px;
+            padding: 15px;
+            background: #f0f4ff;
+            border-left: 6px solid #6a11cb;
+            border-radius: 10px;
+            text-align: left;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        .result i {
+            color: #6015b1ff;
+            margin-right: 5px;
+        }
+
+        .refresh {
+            margin-top: 20px;
+            background: none;
+            color: #555;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 15px;
+            color: #555;
+            font-size: 13px;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 30px 20px;
+            }
+            .input-group {
+                width: 100%;
+            }
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Watermark floral background -->
+    <div class="flower-bg"></div>
+
+    <!-- Floating decorative circles -->
+    <div class="bg-circle circle1"></div>
+    <div class="bg-circle circle2"></div>
+    <div class="bg-circle circle3"></div>
+
+    <div class="container">
+        <h1><i class="fa-solid fa-seedling"></i> Iris Flower Prediction</h1>
+
+        <form method="post">
+            <div class="input-group">
+                <i class="fa-solid fa-ruler-horizontal"></i>
+                <input type="number" step="0.1" name="sepal_length" placeholder="Sepal Length (cm)" required>
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-ruler-combined"></i>
+                <input type="number" step="0.1" name="sepal_width" placeholder="Sepal Width (cm)" required>
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-leaf"></i>
+                <input type="number" step="0.1" name="petal_length" placeholder="Petal Length (cm)" required>
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-wind"></i>
+                <input type="number" step="0.1" name="petal_width" placeholder="Petal Width (cm)" required>
+            </div>
+            <button type="submit"><i class="fa-solid fa-magnifying-glass-chart"></i> Predict</button>
+        </form>
+
+        {% if prediction is not none %}
+        <div class="result">
+            <p><i class="fa-solid fa-flask"></i> <strong>Features:</strong> {{ features }}</p>
+            <p><i class="fa-solid fa-seedling"></i> <strong>Predicted Class:</strong> {{ prediction }}</p>
+        </div>
+        <button class="refresh" onclick="window.location.reload()"><i class="fa-solid fa-rotate"></i> Try Again</button>
+        {% endif %}
+
+        <footer>🌸 Powered by <strong>FastAPI</strong> & <strong>RandomForest</strong></footer>
+    </div>
+</body>
+</html>
