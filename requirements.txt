@@ -64,7 +64,7 @@ MarkupSafe==3.0.3
 matplotlib==3.10.7
 mdurl==0.1.2
 more-itertools==10.8.0
-numpy==2.3.3
+numpy==2.2.6
 oauthlib==3.3.1
 openapi-pydantic==0.5.1
 opentelemetry-api==1.37.0
